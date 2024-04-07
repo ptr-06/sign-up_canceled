@@ -1,0 +1,21 @@
+import json
+import typer
+
+app = typer.Typer()
+
+@app.command(name='append')
+def append(data: str = typer.Argument(...), filename: str = typer.Argument(...)):
+    with open(filename, 'a') as file:
+        file.write(data + '\n')
+
+@app.command(name='ten_last_args')
+def ten_last_args(filename: str = typer.Argument(...)):
+    with open(filename, 'r') as file:
+        lines = file.readlines()
+        last_10_args = [json.loads(line.strip()) for line in lines[-10:]]
+        for arg in last_10_args:
+            typer.echo(arg)
+
+
+if __name__ == "__main__":
+    app()
